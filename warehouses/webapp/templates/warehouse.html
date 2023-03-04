@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ warehouse.name }}{% endblock %}
+
+{% block body %}
+    {% if items %}
+    <h3> Техника на складе "{{ warehouse.name }}" </h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Производитель</th>
+                    <th scope="col">Страна-производитель</th>
+                    <th scope="col">Модель</th>
+                    <th scope="col">Инв.№</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <th>{{ item.item.id }}</th>
+                    <td>{{ item.item.brand }}</td>
+                    <td>{{ item.item.country }}</td>
+                    <td>{{ item.item.model }}</td>
+                    <td>
+                        {{ item.inventory_id }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+{% endblock %}

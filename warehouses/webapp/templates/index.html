@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+{% block body %}
+    {% if warehouses %}
+        <h3> Склады </h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for warehouse in warehouses %}
+                <tr>
+                <th>{{ warehouse.id }}</th>
+                <td><a href="{% url 'warehouse info' warehouse.id %}">{{ warehouse.name }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    {% if items %}
+        <h3> Техника </h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Производитель</th>
+                    <th scope="col">Страна-производитель</th>
+                    <th scope="col">Модель</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr onclick="window.location='{% url 'item info' item.id %}'" onmouseover="" style="cursor: pointer;">
+                <th>{{ item.id }}</th>
+                <td>{{ item.brand }}</td>
+                <td>{{ item.country }}</td>
+                <td>{{ item.model }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

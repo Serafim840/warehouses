@@ -6,7 +6,7 @@ class Item(models.Model):
     country = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"({self.brand}, {self.model}, {self.country})"
+        return f"{self.brand}, {self.model}, {self.country}"
 
 class Warehouse(models.Model):
     name = models.CharField(max_length=255)
