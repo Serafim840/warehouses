@@ -13,10 +13,11 @@ def item(request, item_id):
 
 def warehouse_all(request, warehouse_id):
     warehouse = Warehouse.objects.get(id=warehouse_id)
-    items = ItemInWarehouse.objects.filter(warehouse_id=warehouse_id)
-    return render(request, "warehouse.html", {'warehouse': warehouse, 'items': items})
+    results = ItemInWarehouse.objects.filter(warehouse_id=warehouse_id).select_related('item')
+    return render(request, "warehouse.html", {'warehouse': warehouse, 'results': results, 'count': False})
 
 def warehouse_count(request, warehouse_id):
     warehouse = Warehouse.objects.get(id=warehouse_id)
-    items = ItemInWarehouse.objects.filter(warehouse_id=warehouse_id).annotate(item_count=Count('item'))
-    return render(request, "warehouse.html", {'warehouse': warehouse, 'items': items, 'count': True})
+    results = ItemInWarehouse.objects.filter(warehouse_id=warehouse_id).values('item', 'item__country', 'item__brand', 'item__model').annotate(item_count=Count('item'))
+    return render(request, "warehouse.html", {'warehouse': warehouse, 'results': results, 'count': True})
+
