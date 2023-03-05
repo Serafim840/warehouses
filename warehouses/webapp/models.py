@@ -5,6 +5,11 @@ class Item(models.Model):
     model = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['brand', 'model'], name="unique_model")
+        ]
+
     def __str__(self):
         return f"{self.brand}, {self.model}, {self.country}"
 
