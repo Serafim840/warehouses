@@ -30,6 +30,7 @@
                     <th scope="col">Производитель</th>
                     <th scope="col">Страна-производитель</th>
                     <th scope="col">Модель</th>
+                    <th scope="col">Кол-во</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +40,7 @@
                 <td>{{ item.brand }}</td>
                 <td>{{ item.country }}</td>
                 <td>{{ item.model }}</td>
+                <td>{{ item.item_count }}</td>
                 </tr>
             {% endfor %}
             </tbody>

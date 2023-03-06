@@ -6,7 +6,14 @@ from .models import Item, Warehouse, ItemInWarehouse
 
 def index(request):
     warehouses = Warehouse.objects.all()
-    items = Item.objects.all()
+    items = Item.objects.raw('''
+        SELECT it.id, it.brand, it.model, it.country, COUNT(iw.id) as item_count 
+        FROM webapp_Item it 
+        LEFT JOIN webapp_ItemInWarehouse iw 
+        ON it.id = iw.item_id 
+        GROUP BY it.id
+        ''')
+    
     return render(request, "index.html", {'warehouses': warehouses, 'items': items})
 
 def item_all(request, item_id):
