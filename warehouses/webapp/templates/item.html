@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.brand }} {{ item.model }}{% endblock %}
+
+{% block body %}
+<h3> Техника "{{ item }}" ({% if count %}отчет по складам{% else %}вся техника{% endif %})</h3>
+    {% if results %}
+    
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Склад</th>
+                    {% if count %}
+                    <th scope="col">Кол-во</th>
+                    {% else %}
+                    <th scope="col">Инв.№</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% if count %}
+                {% for result in results %}
+                    <tr>
+                        <td><a href="{% url 'warehouse info' result.id %}">{{ result.name }}</a></td>
+                        <td>
+                            {{ result.item_count }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                {% for result in results %}
+                    <tr>
+                        <td><a href="{% url 'warehouse info' result.warehouse.id %}">{{ result.warehouse.name }}</a></td>
+                        <td>
+                            {{ result.inventory_id }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {%endif%}
+            </tbody>
+        </table>
+
+    
+    {% else %}
+        <h5>(пусто)</h5>
+    {% endif %}
+    
+    {% if count %}
+    <a href="{% url 'item info' item.id %}">Просмотреть все единицы</a>
+    {% else %}
+    <a href="{% url 'item count' item.id %}">Просмотреть остатки на складах</a>
+    {% endif %}
+{% endblock %}

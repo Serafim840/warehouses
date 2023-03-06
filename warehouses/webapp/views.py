@@ -9,9 +9,15 @@ def index(request):
     items = Item.objects.all()
     return render(request, "index.html", {'warehouses': warehouses, 'items': items})
 
-def item(request, item_id):
-    result = get_object_or_404(Item, pk=item_id)
-    return HttpResponse(str(result))
+def item_all(request, item_id):
+    item = get_object_or_404(Item, pk=item_id)
+    results = ItemInWarehouse.objects.filter(item_id=item_id).select_related('warehouse')
+    return render(request, "item.html", {'item': item, 'results': results, 'count': False})
+
+def item_count(request, item_id):
+    item = get_object_or_404(Item, pk=item_id)
+    results = Item.objects.get(id=item_id).warehouse_set.annotate(item_count=Count('id'))
+    return render(request, "item.html", {'item': item, 'results': results, 'count': True})
 
 def create_item(request):
     if request.method == 'GET':
