@@ -26,10 +26,10 @@
             {% if count %}
                 {% for result in results %}
                     <tr>
-                        <th>{{ result.item }}</th>
-                        <td>{{ result.item__brand }}</td>
-                        <td>{{ result.item__country }}</td>
-                        <td>{{ result.item__model }}</td>
+                        <th>{{ result.id }}</th>
+                        <td>{{ result.brand }}</td>
+                        <td>{{ result.country }}</td>
+                        <td>{{ result.model }}</td>
                         <td>
                             {{ result.item_count }}
                         </td>
@@ -56,7 +56,7 @@
     {% else %}
         <h5>(пусто)</h5>
     {% endif %}
-    
+
     {% if count %}
     <a href="{% url 'warehouse info' warehouse.id %}">Просмотреть всю технику</a>
     {% else %}

@@ -31,11 +31,11 @@ def create_item(request):
 
 def warehouse_all(request, warehouse_id):
     warehouse = get_object_or_404(Warehouse, pk=warehouse_id)
-    results = ItemInWarehouse.objects.filter(warehouse_id=warehouse_id).select_related('item')
+    results = ItemInWarehouse.objects.filter(warehouse=warehouse).select_related('item')
     return render(request, "warehouse.html", {'warehouse': warehouse, 'results': results, 'count': False})
 
 def warehouse_count(request, warehouse_id):
     warehouse = get_object_or_404(Warehouse, pk=warehouse_id)
-    results = ItemInWarehouse.objects.filter(warehouse_id=warehouse_id).values('item', 'item__country', 'item__brand', 'item__model').annotate(item_count=Count('item'))
+    results = Warehouse.objects.get(id=warehouse_id).items.annotate(item_count=Count('id'))
     return render(request, "warehouse.html", {'warehouse': warehouse, 'results': results, 'count': True})
 
