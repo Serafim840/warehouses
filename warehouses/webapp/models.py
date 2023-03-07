@@ -23,14 +23,14 @@ class Warehouse(models.Model):
         return self.name
 
 
-class ItemInWarehouse(models.Model):
+class Stock(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
     inventory_id = models.CharField(max_length=255)
 
-class ItemInWarehouseForm(ModelForm):
+class StockForm(ModelForm):
     class Meta:
-        model = ItemInWarehouse
+        model = Stock
         fields = '__all__'
         labels = {
             'item': 'Техника',

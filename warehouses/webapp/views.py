@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Count
 from django.urls import reverse
-from .models import Item, Warehouse, ItemInWarehouse, ItemInWarehouseForm
+from .models import Item, Warehouse, Stock, StockForm
 from django.forms import modelformset_factory
 
 
@@ -23,7 +23,7 @@ def index(request):
 
 def item_all(request, item_id):
     item = get_object_or_404(Item, pk=item_id)
-    results = ItemInWarehouse.objects.filter(item_id=item_id).select_related(
+    results = Stock.objects.filter(item_id=item_id).select_related(
         "warehouse"
     )
     return render(
@@ -59,7 +59,7 @@ def create_item(request):
 
 def warehouse_all(request, warehouse_id):
     warehouse = get_object_or_404(Warehouse, pk=warehouse_id)
-    results = ItemInWarehouse.objects.filter(warehouse=warehouse).select_related("item")
+    results = Stock.objects.filter(warehouse=warehouse).select_related("item")
     return render(
         request,
         "warehouse.html",
@@ -83,8 +83,8 @@ def add_items(request, warehouse_id, amount=None):
         return render(request, 'add_items.html', {'warehouse': Warehouse.objects.get(id=warehouse_id), 'amount': amount})
     elif amount > 0:
         ItemInWareHouseFormSet = modelformset_factory(
-            ItemInWarehouse, 
-            form=ItemInWarehouseForm,
+            Stock, 
+            form=StockForm,
             extra=amount,
         )
         if request.method == 'POST':
@@ -93,7 +93,7 @@ def add_items(request, warehouse_id, amount=None):
                 formset.save()
                 return HttpResponseRedirect(reverse("warehouse info", args=(warehouse_id,)))
         else:
-            formset = ItemInWareHouseFormSet(queryset=ItemInWarehouse.objects.none(), initial=[{'warehouse': warehouse_id}]*amount)
+            formset = ItemInWareHouseFormSet(queryset=Stock.objects.none(), initial=[{'warehouse': warehouse_id}]*amount)
             return render(request, 'add_items.html', {'formset': formset, 'warehouse': Warehouse.objects.get(id=warehouse_id), 'amount': amount})
     else:
         return HttpResponseRedirect(reverse("add items", args=(warehouse_id,)))
