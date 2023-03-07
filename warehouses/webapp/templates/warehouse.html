@@ -62,5 +62,6 @@
     {% else %}
     <a href="{% url 'warehouse count' warehouse.id %}">Просмотреть остатки по каждой единице</a>
     {% endif %}<br>
-    <a href="{% url 'add items' warehouse.id %}">Прибытие оборудования</a>
+    <a href="{% url 'add items' warehouse.id %}">Прибытие оборудования</a><br>
+    <a href="{% url 'remove items' warehouse.id %}">Выдача оборудования</a><br>
 {% endblock %}

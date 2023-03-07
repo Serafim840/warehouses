@@ -97,4 +97,18 @@ def add_items(request, warehouse_id, amount=None):
             return render(request, 'add_items.html', {'formset': formset, 'warehouse': Warehouse.objects.get(id=warehouse_id), 'amount': amount})
     else:
         return HttpResponseRedirect(reverse("add items", args=(warehouse_id,)))
+    
+def remove_items(request, warehouse_id):
+    if request.method == 'GET':
+        warehouse = get_object_or_404(Warehouse, pk=warehouse_id)
+        results = Stock.objects.filter(warehouse=warehouse).select_related("item")
+        return render(
+            request,
+            "remove_items.html",
+            {"warehouse": warehouse, "results": results},
+        )
+    else:
+        for stock in request.POST['stocks']:
+            Stock.objects.get(id=stock).delete()
+        return HttpResponseRedirect(reverse("warehouse info", args=(warehouse_id,)))
         

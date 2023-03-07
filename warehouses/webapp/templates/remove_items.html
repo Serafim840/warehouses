@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ warehouse.name }}{% endblock %}
+
+{% block body %}
+<h3> Техника на складе "{{ warehouse.name }}" (выдача)</h3>
+    {% if results %}
+    <form method="post">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Удалить</th>
+                    <th scope="col">Производитель</th>
+                    <th scope="col">Страна-производитель</th>
+                    <th scope="col">Модель</th>
+                    <th scope="col">Инв.№</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    {% with item=result.item %}
+                    <tr>
+                        <td><input type="checkbox" value="{{ result.id }}" name="stocks"> </td>
+                        <td>{{ item.brand }}{{ result.id }}</td>
+                        <td>{{ item.country }}</td>
+                        <td>{{ item.model }}</td>
+                        <td>
+                            {{ result.inventory_id }}
+                        </td>
+                    </tr>
+                    {% endwith %}
+                {% endfor %}
+            </tbody>
+        </table>
+    <button type="submit" class="btn btn-primary">Удалить</button>
+    </form>
+    {% else %}
+        <h5>(пусто)</h5>
+    {% endif %}
+
+    <a href="{% url 'warehouse info' warehouse.id %}">Просмотреть всю технику</a><br>
+    <a href="{% url 'warehouse count' warehouse.id %}">Просмотреть остатки по каждой единице</a><br>
+    <a href="{% url 'add items' warehouse.id %}">Прибытие оборудования</a>
+{% endblock %}
