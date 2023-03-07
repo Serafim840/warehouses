@@ -17,7 +17,7 @@ class Item(models.Model):
 
 class Warehouse(models.Model):
     name = models.CharField(max_length=255)
-    items = models.ManyToManyField(Item, through="ItemInWarehouse")
+    items = models.ManyToManyField(Item, through="Stock")
 
     def __str__(self) -> str:
         return self.name
