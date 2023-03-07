@@ -3,6 +3,7 @@
 {% block title %}Добавить новый тип техники{% endblock %}
 
 {% block body %}
+    <h2>Новый тип техники</h2>
     <form action="{% url 'create item' %}" method="post">
     {% csrf_token %}
         <div class="form-group row">

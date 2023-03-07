@@ -40,10 +40,11 @@
                 <td>{{ item.brand }}</td>
                 <td>{{ item.country }}</td>
                 <td>{{ item.model }}</td>
-                <td>{{ item.item_count }}</td>
+                <td>{{ item.item_count }} шт.</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        <a href="{% url 'create item' %}">Добавить новую единицу</a>
     {% endif %}
 {% endblock %}
