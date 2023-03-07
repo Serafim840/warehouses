@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import Count
 from django.urls import reverse
-from .models import Item, Warehouse, ItemInWarehouse
+from .models import Item, Warehouse, ItemInWarehouse, ItemInWarehouseForm
+from django.forms import modelformset_factory
 
 
 def index(request):
@@ -38,7 +39,6 @@ def item_count(request, item_id):
     return render(
         request, "item.html", {"item": item, "results": results, "count": True}
     )
-
 
 def create_item(request):
     if request.method == "GET":
@@ -77,3 +77,24 @@ def warehouse_count(request, warehouse_id):
         "warehouse.html",
         {"warehouse": warehouse, "results": results, "count": True},
     )
+
+def add_items(request, warehouse_id, amount=None):
+    if amount is None:
+        return render(request, 'add_items.html', {'warehouse': Warehouse.objects.get(id=warehouse_id), 'amount': amount})
+    elif amount > 0:
+        ItemInWareHouseFormSet = modelformset_factory(
+            ItemInWarehouse, 
+            form=ItemInWarehouseForm,
+            extra=amount,
+        )
+        if request.method == 'POST':
+            formset = ItemInWareHouseFormSet(request.POST, initial=[{'warehouse': warehouse_id}]*amount)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect(reverse("warehouse info", args=(warehouse_id,)))
+        else:
+            formset = ItemInWareHouseFormSet(queryset=ItemInWarehouse.objects.none(), initial=[{'warehouse': warehouse_id}]*amount)
+            return render(request, 'add_items.html', {'formset': formset, 'warehouse': Warehouse.objects.get(id=warehouse_id), 'amount': amount})
+    else:
+        return HttpResponseRedirect(reverse("add items", args=(warehouse_id,)))
+        

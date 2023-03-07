@@ -13,4 +13,6 @@ urlpatterns = [
         views.warehouse_count,
         name="warehouse count",
     ),
+    path("warehouse/<int:warehouse_id>/add_items", views.add_items, name="add items"),
+    path("warehouse/<int:warehouse_id>/add_items/<int:amount>", views.add_items, name="add items"),
 ]
