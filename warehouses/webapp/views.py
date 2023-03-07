@@ -12,7 +12,7 @@ def index(request):
         """
         SELECT it.id, it.brand, it.model, it.country, COUNT(iw.id) as item_count 
         FROM webapp_Item it 
-        LEFT JOIN webapp_ItemInWarehouse iw 
+        LEFT JOIN webapp_stock iw 
         ON it.id = iw.item_id 
         GROUP BY it.id
         """
