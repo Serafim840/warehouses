@@ -14,7 +14,19 @@ urlpatterns = [
         name="warehouse count",
     ),
     path("warehouse/<int:warehouse_id>/add_items", views.add_items, name="add items"),
-    path("warehouse/<int:warehouse_id>/add_items/<int:amount>", views.add_items, name="add items"),
-    path("warehouse/<int:warehouse_id>/remove_items", views.remove_items, name="remove items"),
-    path("warehouse/<int:warehouse_id>/remove_items/<int:amount>", views.remove_items, name="remove items"),
+    path(
+        "warehouse/<int:warehouse_id>/add_items/<int:amount>",
+        views.add_items,
+        name="add items",
+    ),
+    path(
+        "warehouse/<int:warehouse_id>/remove_items",
+        views.remove_items,
+        name="remove items",
+    ),
+    path(
+        "warehouse/<int:warehouse_id>/remove_items/<int:amount>",
+        views.remove_items,
+        name="remove items",
+    ),
 ]

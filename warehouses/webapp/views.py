@@ -23,9 +23,7 @@ def index(request):
 
 def item_all(request, item_id):
     item = get_object_or_404(Item, pk=item_id)
-    results = Stock.objects.filter(item_id=item_id).select_related(
-        "warehouse"
-    )
+    results = Stock.objects.filter(item_id=item_id).select_related("warehouse")
     return render(
         request, "item.html", {"item": item, "results": results, "count": False}
     )
@@ -39,6 +37,7 @@ def item_count(request, item_id):
     return render(
         request, "item.html", {"item": item, "results": results, "count": True}
     )
+
 
 def create_item(request):
     if request.method == "GET":
@@ -78,28 +77,49 @@ def warehouse_count(request, warehouse_id):
         {"warehouse": warehouse, "results": results, "count": True},
     )
 
+
 def add_items(request, warehouse_id, amount=None):
     if amount is None:
-        return render(request, 'add_items.html', {'warehouse': Warehouse.objects.get(id=warehouse_id), 'amount': amount})
+        return render(
+            request,
+            "add_items.html",
+            {"warehouse": Warehouse.objects.get(id=warehouse_id), "amount": amount},
+        )
     elif amount > 0:
         ItemInWareHouseFormSet = modelformset_factory(
-            Stock, 
+            Stock,
             form=StockForm,
             extra=amount,
         )
-        if request.method == 'POST':
-            formset = ItemInWareHouseFormSet(request.POST, initial=[{'warehouse': warehouse_id}]*amount)
+        if request.method == "POST":
+            formset = ItemInWareHouseFormSet(
+                request.POST, initial=[{"warehouse": warehouse_id}] * amount
+            )
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect(reverse("warehouse info", args=(warehouse_id,)))
+                return HttpResponseRedirect(
+                    reverse("warehouse info", args=(warehouse_id,))
+                )
         else:
-            formset = ItemInWareHouseFormSet(queryset=Stock.objects.none(), initial=[{'warehouse': warehouse_id}]*amount)
-            return render(request, 'add_items.html', {'formset': formset, 'warehouse': Warehouse.objects.get(id=warehouse_id), 'amount': amount})
+            formset = ItemInWareHouseFormSet(
+                queryset=Stock.objects.none(),
+                initial=[{"warehouse": warehouse_id}] * amount,
+            )
+            return render(
+                request,
+                "add_items.html",
+                {
+                    "formset": formset,
+                    "warehouse": Warehouse.objects.get(id=warehouse_id),
+                    "amount": amount,
+                },
+            )
     else:
         return HttpResponseRedirect(reverse("add items", args=(warehouse_id,)))
-    
+
+
 def remove_items(request, warehouse_id):
-    if request.method == 'GET':
+    if request.method == "GET":
         warehouse = get_object_or_404(Warehouse, pk=warehouse_id)
         results = Stock.objects.filter(warehouse=warehouse).select_related("item")
         return render(
@@ -108,7 +128,6 @@ def remove_items(request, warehouse_id):
             {"warehouse": warehouse, "results": results},
         )
     else:
-        for stock in request.POST['stocks']:
+        for stock in request.POST["stocks"]:
             Stock.objects.get(id=stock).delete()
         return HttpResponseRedirect(reverse("warehouse info", args=(warehouse_id,)))
-        

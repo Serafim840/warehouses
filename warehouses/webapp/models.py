@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ModelForm, HiddenInput
 
+
 class Item(models.Model):
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=255)
@@ -28,15 +29,10 @@ class Stock(models.Model):
     warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
     inventory_id = models.CharField(max_length=255)
 
+
 class StockForm(ModelForm):
     class Meta:
         model = Stock
-        fields = '__all__'
-        labels = {
-            'item': 'Техника',
-            'inventory_id': 'Инв №'
-        }
-        widgets = {
-            'warehouse': HiddenInput()
-        }
-
+        fields = "__all__"
+        labels = {"item": "Техника", "inventory_id": "Инв №"}
+        widgets = {"warehouse": HiddenInput()}
