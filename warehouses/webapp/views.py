@@ -34,8 +34,11 @@ def item_count(request, item_id):
     results = Item.objects.get(id=item_id).warehouse_set.annotate(
         item_count=Count("id")
     )
+    final = sum([result.item_count for result in results])
     return render(
-        request, "item.html", {"item": item, "results": results, "count": True}
+        request,
+        "item.html",
+        {"item": item, "results": results, "count": True, "final": final},
     )
 
 

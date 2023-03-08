@@ -42,7 +42,11 @@
                 <tr>
                     <td>Всего</td>
                     <td>
+                        {% if count %}
+                        {{ final }} шт.
+                        {% else %}
                         {{ results|length }} шт.
+                        {% endif %}
                     </td>
                 </tr>
             </tfoot>
