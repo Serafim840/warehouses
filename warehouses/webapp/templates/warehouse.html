@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{{ warehouse.name }}{% endblock %}
+
+{% block body %}
+<h3> Техника на складе "{{ warehouse.name }}" ({% if count %}отчет по каждой единице{% else %}вся техника{% endif %})</h3>
+    {% if results %}
+    
+        <table class="table">
+            <thead>
+                <tr>
+                    {% if count %}
+                    <th scope="col">#</th>
+                    {% endif %}
+                    <th scope="col">Производитель</th>
+                    <th scope="col">Страна-производитель</th>
+                    <th scope="col">Модель</th>
+                    {% if count %}
+                    <th scope="col">Кол-во</th>
+                    {% else %}
+                    <th scope="col">Инв.№</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% if count %}
+                {% for result in results %}
+                    <tr>
+                        <th>{{ result.id }}</th>
+                        <td>{{ result.brand }}</td>
+                        <td>{{ result.country }}</td>
+                        <td>{{ result.model }}</td>
+                        <td>
+                            {{ result.item_count }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                {% for result in results %}
+                    {% with item=result.item %}
+                    <tr>
+                        <td>{{ item.brand }}</td>
+                        <td>{{ item.country }}</td>
+                        <td>{{ item.model }}</td>
+                        <td>
+                            {{ result.inventory_id }}
+                        </td>
+                    </tr>
+                    {% endwith %}
+                {% endfor %}
+            {%endif%}
+            </tbody>
+        </table>
+
+    
+    {% else %}
+        <h5>(пусто)</h5>
+    {% endif %}
+
+    {% if count %}
+    <a href="{% url 'warehouse info' warehouse.id %}">Просмотреть всю технику</a>
+    {% else %}
+    <a href="{% url 'warehouse count' warehouse.id %}">Просмотреть остатки по каждой единице</a>
+    {% endif %}<br>
+    <a href="{% url 'add items' warehouse.id %}">Прибытие оборудования</a><br>
+    <a href="{% url 'remove items' warehouse.id %}">Выдача оборудования</a><br>
+{% endblock %}
