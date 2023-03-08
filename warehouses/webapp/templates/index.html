@@ -35,7 +35,9 @@
             </thead>
             <tbody>
             {% for item in items %}
-                <tr onclick="window.location='{% url 'item info' item.id %}'" onmouseover="" style="cursor: pointer;">
+                <tr onclick="window.location='{% url 'item info' item.id %}'" style="cursor: pointer;" 
+                onmouseover="this.style.backgroundColor = 'RGB(200, 200, 200)'"
+                onmouseleave="style.backgroundColor = ''">
                 <th>{{ item.id }}</th>
                 <td>{{ item.brand }}</td>
                 <td>{{ item.country }}</td>

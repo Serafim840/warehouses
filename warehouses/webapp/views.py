@@ -130,7 +130,7 @@ def remove_items(request, warehouse_id):
     else:
         stocks = []
         for key, value in request.POST.items():
-            if 'stocks' in key and value == '1':
+            if "stocks" in key and value == "1":
                 stocks.append(int(key[6:]))
         Stock.objects.filter(id__in=stocks).delete()
         return HttpResponseRedirect(reverse("warehouse info", args=(warehouse_id,)))
