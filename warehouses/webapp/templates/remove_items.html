@@ -21,8 +21,8 @@
                 {% for result in results %}
                     {% with item=result.item %}
                     <tr>
-                        <td><input type="checkbox" value="{{ result.id }}" name="stocks"> </td>
-                        <td>{{ item.brand }}{{ result.id }}</td>
+                        <td><input type="checkbox" value="1" name="stocks{{ result.id }}"></td>
+                        <td>{{ item.brand }}</td>
                         <td>{{ item.country }}</td>
                         <td>{{ item.model }}</td>
                         <td>
